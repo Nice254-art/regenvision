@@ -36,8 +36,7 @@ Real-time trial counter and progress bar on dashboard
 Direct access to AI Land Health Dashboard (Streamlit)
 
 Automatic lockout once free trials expire
-
-📊 Dashboard
+**📊 Dashboard**
 
 Personalized dashboard displaying account info & trial status
 
@@ -47,7 +46,7 @@ Tracks session usage and access history
 
 Fully responsive across devices
 
-⏳ Trial Expiration
+**⏳ Trial Expiration**
 
 Clear notice and alerts when trial access ends
 
@@ -55,14 +54,14 @@ Displays user’s trial summary, expiry, and upgrade options
 
 Optional premium contact and extension request
 
-⚙️ Tech Stack
+**⚙️ Tech Stack**
 Layer	Technologies
 Frontend	React 18 + TypeScript + Tailwind CSS
 Routing	React Router v7
 Backend/Database	Supabase (PostgreSQL + Auth)
 Icons	Lucide React
 AI Integration	Streamlit (Python, scikit-learn, joblib, folium, Google Earth Engine)
-📂 Project Structure
+**📂 Project Structure**
 src/
 ├── components/
 │   ├── Dashboard.tsx
@@ -78,7 +77,7 @@ src/
 ├── App.tsx
 └── main.tsx
 
-🧠 AI Model Metrics & Training
+**🧠 AI Model Metrics & Training**
 
 ReGenVision’s predictive engine is powered by multiple trained models that assess land health using satellite-derived environmental indicators.
 
@@ -87,7 +86,7 @@ NDVI Regressor (model_ndvi_regressor.pkl)	Predicts vegetation health	Rainfall, S
 Soil Quality Classifier (model_soil_classifier.pkl)	Classifies soil fertility (Poor → Rich)	SOC, NDVI, Rainfall	Precision, Recall, F1-score
 Land Degradation Risk Classifier (model_risk_classifier.pkl)	Detects degradation risk zones	Rainfall Intensity, Slope, Vegetation Density	Accuracy, Macro Avg F1
 Erosion Susceptibility Classifier (model_erosion_classifier.pkl)	Identifies erosion-prone areas	Slope × Rainfall – NDVI	Accuracy, Weighted F1
-📈 Example Model Results (Training Phase)
+**📈 Example Model Results (Training Phase)**
 Metric	Result
 NDVI RMSE	0.00097
 Soil Quality Accuracy	99%
@@ -96,12 +95,12 @@ Erosion Susceptibility Accuracy	96%
 
 Models were initially trained using simulated geospatial datasets and can be retrained using real Earth Engine data sources like Sentinel-2 (NDVI), CHIRPS (Rainfall), and SoilGrids (SOC).
 
-💻 How the Streamlit App Works
+**💻 How the Streamlit App Works**
 
 The Streamlit Dashboard serves as the AI analysis interface, connecting directly to pre-trained .pkl models.
 It allows users to upload, simulate, and visualize environmental data to generate real-time land health predictions.
 
-🧩 Workflow
+**🧩 Workflow**
 1️⃣ Input Features
 
 Users input parameters such as rainfall, slope, SOC, and NDVI through intuitive sidebar sliders or forms.
