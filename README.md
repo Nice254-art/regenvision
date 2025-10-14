@@ -1,216 +1,190 @@
-# ReGenVision - AI for Land Health
+ReGenVision – AI for Land Health
 
-ReGenVision is a modern web application that leverages artificial intelligence and satellite imagery to monitor, analyze, and predict soil and vegetation health. The platform empowers farmers, land managers, and environmental scientists to make data-driven decisions for sustainable and regenerative land management.
+🚀 Live Demo: ReGenVision AI Dashboard
 
-## Features
+ReGenVision is an intelligent platform that uses AI and satellite data to monitor, analyze, and predict soil, vegetation, and land health conditions.
+It empowers farmers, land managers, and environmental scientists to make data-driven decisions for sustainable and regenerative land use.
 
-### Landing Page
-- Professional hero section with clear value proposition
-- Overview of AI-powered land health monitoring capabilities
-- Feature highlights for vegetation monitoring, soil analysis, and predictive insights
-- Clean, responsive design with green/white color scheme
+✨ Key Features
+🌱 Landing Page
 
-### Authentication System
-- Secure user registration and login powered by Supabase Auth
-- Email and password authentication
-- Protected routes for authenticated users
-- Automatic profile creation on signup
+Professional design with a clear value proposition
 
-### Free Trial Management
-- New users automatically receive 3 free trial sessions
-- Real-time trial counter and progress tracking
-- Dashboard access to external Streamlit analytics platform
-- Session tracking and usage history
-- Automatic trial expiration after 3 sessions
+Highlights AI-based land health monitoring
 
-### Dashboard
-- Personalized user welcome with account information
-- Visual trial status display with progress bar
-- One-click launch to AI Land Health Dashboard (Streamlit)
-- Session tracking and automatic trial count updates
-- Responsive design for all devices
+Explains vegetation, soil, and erosion analysis capabilities
 
-### Trial Expiration
-- Clear messaging when trial limit is reached
-- Upgrade information and benefits overview
-- Contact options for premium access
-- Account summary display
+Modern green/white responsive layout
 
-## Tech Stack
+🔐 Authentication System
 
-- **Frontend Framework**: React 18 with TypeScript
-- **Build Tool**: Vite
-- **Routing**: React Router v7
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Backend/Database**: Supabase (PostgreSQL)
-- **Authentication**: Supabase Auth
-- **External Integration**: Streamlit Dashboard
+Secure signup/login via Supabase Auth
 
-## Project Structure
+Email-password authentication with protected routes
 
-```
+Automatic user profile creation and session tracking
+
+🧭 Free Trial Management
+
+Each user gets 3 free trial sessions
+
+Real-time trial counter and progress bar
+
+Direct access to the AI Land Health Dashboard (Streamlit app)
+
+Automatic lock after trials expire
+
+📊 Dashboard
+
+Personalized dashboard showing account details and trial status
+
+One-click access to external AI dashboard
+
+Tracks session count and usage history
+
+Mobile-friendly responsive design
+
+⏳ Trial Expiration
+
+Clear notice when trials end
+
+Upgrade info and contact options
+
+Displays user’s trial summary and usage record
+
+⚙️ Tech Stack
+Layer	Technology
+Frontend	React 18 + TypeScript + Tailwind CSS
+Routing	React Router v7
+Backend/Database	Supabase (PostgreSQL + Auth)
+Icons	Lucide React
+AI Integration	External Streamlit app (Python, scikit-learn, joblib, folium, Earth Engine)
+📂 Project Structure
 src/
 ├── components/
-│   ├── Dashboard.tsx        # Main dashboard with trial management
-│   ├── Landing.tsx          # Landing page
-│   ├── Login.tsx            # Login page
-│   ├── Register.tsx         # Registration page
-│   ├── TrialExpired.tsx     # Trial expiration page
-│   └── ProtectedRoute.tsx   # Route protection wrapper
+│   ├── Dashboard.tsx
+│   ├── Landing.tsx
+│   ├── Login.tsx
+│   ├── Register.tsx
+│   ├── TrialExpired.tsx
+│   └── ProtectedRoute.tsx
 ├── contexts/
-│   └── AuthContext.tsx      # Authentication context and hooks
+│   └── AuthContext.tsx
 ├── lib/
-│   └── supabase.ts          # Supabase client configuration
-├── App.tsx                  # Main app with routing
-└── main.tsx                 # Application entry point
+│   └── supabase.ts
+├── App.tsx
+└── main.tsx
 
-supabase/
-└── migrations/
-    └── create_users_and_trials_tables.sql  # Database schema
-```
+🧠 AI Model Metrics & Training
 
-## Database Schema
+ReGenVision’s AI is built on multiple trained models that assess land health using satellite-derived indicators.
 
-### Tables
+Model	Purpose	Core Metrics Used	Evaluation Metric
+NDVI Regressor (model_ndvi_regressor.pkl)	Predicts vegetation health	Rainfall, SOC, Slope, Elevation, NDVI	RMSE (Root Mean Square Error)
+Soil Quality Classifier (model_soil_classifier.pkl)	Classifies soil fertility (poor → rich)	Soil Organic Carbon (SOC), NDVI, Rainfall	Precision, Recall, F1-score
+Land Degradation Risk (model_risk_classifier.pkl)	Predicts degradation risk	Rainfall Intensity, Slope, Vegetation Density	Accuracy, Macro Avg F1
+Erosion Susceptibility (model_erosion_classifier.pkl)	Identifies erosion-prone areas	Slope × Rainfall – NDVI	Accuracy, Weighted Avg F1
+📈 Example Output (Training Results)
+NDVI RMSE: 0.00097
+Soil Quality Accuracy: 99%
+Land Degradation Risk Accuracy: 100%
+Erosion Susceptibility Accuracy: 96%
 
-#### `profiles`
-- Extends Supabase auth.users with additional user data
-- Tracks trial count and trial status
-- Automatically created via trigger on user signup
 
-#### `trial_sessions`
-- Records each dashboard access session
-- Links to user profiles
-- Provides session history and analytics
+These results were obtained using Random Forest models trained on simulated geospatial data.
+The models can later be retrained using real Earth Engine layers like Sentinel-2 (NDVI), CHIRPS (rainfall), and SoilGrids (SOC).
 
-### Security
-- Row Level Security (RLS) enabled on all tables
-- Users can only access their own data
-- Secure authentication policies
+💻 How the Streamlit App Works
 
-## Getting Started
+The Streamlit dashboard acts as the AI analytics front-end.
+It connects to your trained .pkl models and allows users to simulate or upload real environmental data for prediction.
 
-### Prerequisites
-- Node.js 18+ and npm
-- Supabase account (database already configured)
+🧩 Workflow
 
-### Installation
+Input Features
+Users provide values for rainfall, slope, SOC, NDVI, etc. via sidebar sliders or number inputs.
 
-1. Clone the repository:
-```bash
+Prediction Engine
+Streamlit loads the corresponding model (joblib.load()) and runs:
+
+prediction = model.predict(input_data)
+
+
+Visual Output
+Results are displayed as:
+
+NDVI predictions
+
+Soil class labels (e.g., “Moderate”, “Rich”)
+
+Land degradation risk maps
+
+Erosion susceptibility warnings
+
+Visualization Tools
+
+🌍 Interactive folium map for visualizing risk zones
+
+📈 Charts summarizing model outputs
+
+🧾 Downloadable CSV summaries (optional)
+
+🧠 Models Used by the Streamlit App
+model_ndvi_regressor.pkl
+model_soil_classifier.pkl
+model_risk_classifier.pkl
+model_erosion_classifier.pkl
+model_scaler.pkl
+
+
+Each is loaded dynamically depending on the selected analysis type.
+
+🔗 Live Demo
+
+You can try the live demo of ReGenVision’s web interface here:
+👉 https://regenvision-frontend-tkju.bolt.host
+
+⚡ Getting Started Locally
+1️⃣ Clone & Install
 git clone <repository-url>
 cd project
-```
-
-2. Install dependencies:
-```bash
 npm install
-```
 
-3. Environment variables are already configured in `.env`:
-```
+2️⃣ Environment Setup
+
+Create .env:
+
 VITE_SUPABASE_URL=<your-supabase-url>
 VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
-```
 
-4. Run the development server:
-```bash
+3️⃣ Start Development
 npm run dev
-```
 
-5. Build for production:
-```bash
-npm run build
-```
+4️⃣ Launch AI Dashboard (Streamlit)
+streamlit run app.py
 
-6. Preview production build:
-```bash
-npm run preview
-```
+🧩 Configuration
+Setting	Location	Default
+Trial Limit	src/components/Dashboard.tsx	3 sessions
+Streamlit Dashboard URL	src/components/Dashboard.tsx	https://soilhealt.streamlit.app/ or your deployed dashboard
+🚀 Future Enhancements
 
-## Usage
+FastAPI backend for advanced analytics
 
-### For Users
+Payment and subscription management
 
-1. **Sign Up**: Create a new account on the registration page
-2. **Login**: Access your account with email and password
-3. **Dashboard**: View your trial status and remaining sessions
-4. **Launch Dashboard**: Click to open the AI Land Health Dashboard (Streamlit app)
-5. **Trial Tracking**: Each launch counts as one session (max 3 free sessions)
-6. **Upgrade**: Contact us when your trial expires for unlimited access
+Multi-region support (Africa-first datasets)
 
-### For Developers
+Mobile-friendly app interface
 
-#### Authentication Context
-```typescript
-import { useAuth } from './contexts/AuthContext';
+💌 Support
 
-const { user, profile, signIn, signUp, signOut, refreshProfile } = useAuth();
-```
+Email: contact@regenvision.com
 
-#### Protected Routes
-```typescript
-<Route
-  path="/dashboard"
-  element={
-    <ProtectedRoute>
-      <Dashboard />
-    </ProtectedRoute>
-  }
-/>
-```
+GitHub: Open an issue for bugs or feature requests
 
-## Configuration
+👥 Team ReGenVision
 
-### Trial Settings
-The trial limit is set to 3 sessions. To modify this, update the `TRIAL_LIMIT` constant in `src/components/Dashboard.tsx`:
+Built with passion for regenerative agriculture, powered by:
 
-```typescript
-const TRIAL_LIMIT = 3;
-```
-
-### External Dashboard URL
-The Streamlit dashboard URL can be modified in `src/components/Dashboard.tsx`:
-
-```typescript
-const STREAMLIT_URL = 'https://soilhealt.streamlit.app/';
-```
-
-## Future Enhancements
-
-This frontend is designed to integrate with a FastAPI backend for:
-- Enhanced user management
-- Advanced analytics and reporting
-- Payment processing for premium subscriptions
-- Additional dashboard features and customization
-- API endpoints for mobile applications
-
-## Contributing
-
-Contributions are welcome! Please follow these guidelines:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes with clear commit messages
-4. Test thoroughly
-5. Submit a pull request
-
-## Support
-
-For questions, issues, or upgrade requests:
-- Email: contact@regenvision.com
-- Open an issue on GitHub
-
-## License
-
-[Specify your license here]
-
-## Team
-
-Built by Team ReGenVision
-
-Powered by AI, Earth Engine & Open Data
-
----
-
-**Note**: This application requires an active internet connection to access the Supabase backend and external Streamlit dashboard.
+AI, Earth Engine, and Open Environmental Data
