@@ -4,6 +4,52 @@ ReGenVision - AI for Land Health
 
 ReGenVision is a modern web application that leverages artificial intelligence and satellite imagery to monitor, analyze, and predict soil and vegetation health. The platform empowers farmers, land managers, and environmental scientists to make data-driven decisions for sustainable and regenerative land management.
 
+Quick Architecture Overview
+                   ┌──────────────────────────────┐
+                   │        User (Farmer)         │
+                   │  ────────────────┐           │
+                   │  Access via web  │           │
+                   │  or mobile view  │           │
+                   └────────┬─────────┘
+                            │
+                            ▼
+                 ┌──────────────────────────────┐
+                 │     Frontend (React + Vite)  │
+                 │  - Landing & Dashboard UI     │
+                 │  - Auth (Supabase)            │
+                 │  - Launch Streamlit App       │
+                 └────────┬─────────┬───────────┘
+                          │         │
+                          │         ▼
+                          │   ┌─────────────────────┐
+                          │   │ Supabase Backend    │
+                          │   │ - PostgreSQL DB     │
+                          │   │ - Auth + Profiles   │
+                          │   │ - Trial Tracking    │
+                          │   └─────────────────────┘
+                          │
+                          ▼
+            ┌───────────────────────────────────────┐
+            │ Streamlit AI Dashboard (Python)        │
+            │ - Fetches Sentinel-2, CHIRPS, SoilGrids│
+            │ - Computes NDVI, EVI, SAVI indices     │
+            │ - Runs XGBoost yield/health prediction │
+            │ - Displays heatmaps & analytics        │
+            └───────────────────────────────────────┘
+
+
+Flow Summary:
+
+User signs up and logs in via React app (Supabase Auth).
+
+Each dashboard access is tracked (limited to 3 free trials).
+
+Streamlit app fetches geospatial data and runs the trained XGBoost model.
+
+Predictions and health metrics are visualized as interactive maps.
+
+Trial usage updates automatically in Supabase.
+
 Features
 Landing Page
 
@@ -13,228 +59,112 @@ Overview of AI-powered land health monitoring capabilities
 
 Feature highlights for vegetation monitoring, soil analysis, and predictive insights
 
-Clean, responsive design with green/white color scheme
+Clean, responsive design
 
 Authentication System
 
-Secure user registration and login powered by Supabase Auth
+Secure login and registration (Supabase Auth)
 
-Email and password authentication
-
-Protected routes for authenticated users
+Protected routes for logged-in users
 
 Automatic profile creation on signup
 
 Free Trial Management
 
-New users automatically receive 3 free trial sessions
+3 free sessions per new user
 
-Real-time trial counter and progress tracking
+Real-time progress tracking
 
-Dashboard access to external Streamlit analytics platform
+Dashboard access to Streamlit analytics
 
-Session tracking and usage history
-
-Automatic trial expiration after 3 sessions
+Session history and auto-expiration
 
 Dashboard
 
-Personalized user welcome with account information
+Personalized user interface
 
-Visual trial status display with progress bar
+Live trial counter and progress bar
 
-One-click launch to AI Land Health Dashboard (Streamlit)
+One-click access to AI Land Health Dashboard
 
-Session tracking and automatic trial count updates
-
-Responsive design for all devices
-
-Trial Expiration
-
-Clear messaging when trial limit is reached
-
-Upgrade information and benefits overview
-
-Contact options for premium access
-
-Account summary display
+Responsive and mobile-ready design
 
 Tech Stack
 
-Frontend Framework: React 18 with TypeScript
-
-Build Tool: Vite
+Frontend: React 18 + TypeScript + Tailwind CSS + Vite
 
 Routing: React Router v7
 
-Styling: Tailwind CSS
-
-Icons: Lucide React
-
-Backend/Database: Supabase (PostgreSQL)
+Database: Supabase (PostgreSQL + RLS)
 
 Authentication: Supabase Auth
 
-External Integration: Streamlit Dashboard
+External Analytics: Streamlit App (Python)
 
-Project Structure
-src/
-├── components/
-│   ├── Dashboard.tsx        # Main dashboard with trial management
-│   ├── Landing.tsx          # Landing page
-│   ├── Login.tsx            # Login page
-│   ├── Register.tsx         # Registration page
-│   ├── TrialExpired.tsx     # Trial expiration page
-│   └── ProtectedRoute.tsx   # Route protection wrapper
-├── contexts/
-│   └── AuthContext.tsx      # Authentication context and hooks
-├── lib/
-│   └── supabase.ts          # Supabase client configuration
-├── App.tsx                  # Main app with routing
-└── main.tsx                 # Application entry point
+AI Model: XGBoost (Vegetation & Soil Health Prediction)
 
-supabase/
-└── migrations/
-    └── create_users_and_trials_tables.sql  # Database schema
+Machine Learning Model & Metrics
 
-Database Schema
-Tables
-profiles
+The predictive engine uses an XGBoost Regressor trained on combined Earth observation datasets from:
 
-Extends Supabase auth.users with additional user data
+Sentinel-2: NDVI, EVI, SAVI vegetation indices
 
-Tracks trial count and trial status
+CHIRPS: Rainfall and climate data
 
-Automatically created via trigger on user signup
+SoilGrids: Soil organic carbon, texture, and pH
 
-trial_sessions
+Metrics Used
+Metric	Description	Purpose
+R² (Coefficient of Determination)	Measures how well the model explains yield variation	Target > 0.75
+RMSE (Root Mean Squared Error)	Measures the prediction deviation from actual values	Lower = Better
+MAE (Mean Absolute Error)	Averages absolute prediction errors	Stability indicator
+Feature Importance	Highlights which variables most affect yield/health	NDVI, SOC, Rainfall top
+Training
 
-Records each dashboard access session
+Data preprocessed with missing-value imputation and normalization
 
-Links to user profiles
+80/20 train-test split
 
-Provides session history and analytics
+XGBoost hyperparameters tuned using GridSearchCV
 
-Security
-
-Row Level Security (RLS) enabled on all tables
-
-Users can only access their own data
-
-Secure authentication policies
-
-Getting Started
-Prerequisites
-
-Node.js 18+ and npm
-
-Supabase account (database already configured)
-
-Installation
-
-Clone the repository:
-
-git clone <repository-url>
-cd project
-
-
-Install dependencies:
-
-npm install
-
-
-Configure environment variables:
-
-VITE_SUPABASE_URL=<your-supabase-url>
-VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
-
-
-Run the development server:
-
-npm run dev
-
-
-Build for production:
-
-npm run build
-
-
-Preview production build:
-
-npm run preview
-
-Usage
-For Users
-
-Sign Up – Create a new account
-
-Login – Access your personalized dashboard
-
-Dashboard – View your trial status and remaining sessions
-
-Launch Dashboard – Open the AI Land Health Dashboard (Streamlit app)
-
-Trial Tracking – Each Streamlit session counts as one usage
-
-Upgrade – Contact support for premium access
-
-Machine Learning Metrics and Model Explanation
-
-The AI model behind ReGenVision uses XGBoost (Extreme Gradient Boosting) to predict vegetation and soil health based on satellite data sources including Sentinel-2 (NDVI, EVI, SAVI), CHIRPS (rainfall), and SoilGrids (soil properties).
-
-Input Features
-
-NDVI, EVI, SAVI (vegetation indices)
-
-Rainfall (monthly averages)
-
-Soil organic carbon and pH (from SoilGrids)
-
-Land surface temperature and evapotranspiration
-
-Model Metrics
-
-To evaluate the model’s predictive accuracy and reliability, we used the following metrics:
-
-Metric	Description	Target
-R² (Coefficient of Determination)	Measures how well predictions match actual yield values.	> 0.75
-RMSE (Root Mean Squared Error)	Quantifies prediction error magnitude.	< 0.10
-MAE (Mean Absolute Error)	Average absolute difference between predicted and true values.	Low values indicate precision
-Feature Importance	Determines which input factors most influence yield and health predictions.	NDVI, rainfall, and SOC are top
-
-The model was trained and validated using historical yield and environmental data from East African smallholder farms.
+Validation against multiple seasons of regional data
 
 Streamlit Dashboard Overview
 
-The Streamlit app acts as the analytical layer of ReGenVision and is integrated with the React frontend.
+The Streamlit app provides analytical and visualization capabilities:
 
-Core Functions
+Key Functions
 
-Data Ingestion – Users select a region or upload coordinates, and the app fetches relevant satellite data (Sentinel-2, CHIRPS, SoilGrids).
+Data Ingestion – Retrieves imagery from Sentinel-2 and CHIRPS APIs.
 
-Feature Computation – Vegetation indices (NDVI, EVI) and soil moisture proxies are computed dynamically.
+Computation Layer – Derives NDVI, EVI, and other vegetation metrics.
 
-Model Prediction – The trained XGBoost model predicts yield potential or vegetation health score.
+AI Prediction – Runs XGBoost model to estimate yield/health class.
 
-Visualization – Interactive maps (via Folium/Leaflet) display NDVI heatmaps, soil health zones, and predicted yield classes.
+Visualization – Generates dynamic maps and time-series graphs.
 
-Reports – Exportable visual reports summarize trends and predictions for a given season.
+Reporting – Allows export of seasonal summaries as PDF or CSV.
+
+Integration
+
+Each dashboard launch is authenticated and logged through Supabase.
+
+Usage status updates automatically after each session.
 
 Access
 
-The Streamlit dashboard can be launched directly from the web app or accessed here:
-👉 AI Land Health Dashboard
+👉 Open Live Dashboard
 
 Configuration
-Trial Settings
+Trial Limit
 
-You can modify the number of free trial sessions in:
+Edit in src/components/Dashboard.tsx:
 
 const TRIAL_LIMIT = 3;
 
-External Dashboard URL
+Streamlit Link
 
-Update Streamlit link in:
+Modify in src/components/Dashboard.tsx:
 
 const STREAMLIT_URL = 'https://regenvision-frontend-tkju.bolt.host';
 
@@ -242,34 +172,20 @@ Future Enhancements
 
 Integration with FastAPI backend
 
-Real-time NDVI anomaly detection
-
-Payment plans for premium users
-
 SMS/WhatsApp alerts for farmers
 
-Mobile app integration
+Automated NDVI anomaly detection
 
-Contributing
+Payment & subscription system
 
-Fork the repository
-
-Create a feature branch
-
-Implement changes with clear commits
-
-Submit a pull request
+Mobile application
 
 Support
 
-For technical issues or upgrade requests:
+For inquiries or premium access:
 📧 contact@regenvision.com
 
-🐛 Open a GitHub issue
-
-License
-
-[Specify your license here]
+🐛 Open an issue on GitHub
 
 Team ReGenVision
 Powered by AI, Earth Engine & Open Data
