@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 
 const TRIAL_LIMIT = 3;
-const STREAMLIT_URL = 'https://soilhealt.streamlit.app/';
+const STREAMLIT_URL = 'https://healthyvegetation.streamlit.app/';
 
 export const Dashboard = () => {
   const { user, profile, signOut, refreshProfile } = useAuth();
