@@ -4,6 +4,8 @@
 
 ## 🚀 Live Demo
 **[Experience ReGenVision Live](https://regenvision-frontend-tkju.bolt.host)** | **[AI Dashboard](https://soilhealt.streamlit.app)**
+<img width="1360" height="766" alt="image" src="https://github.com/user-attachments/assets/d61301fd-54ea-4721-9b17-d3b3576efc67" />
+
 
 ## 📖 Overview
 
